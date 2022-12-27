@@ -1,0 +1,140 @@
+/*  
+    Add background image and set the container div. 
+    - The goal here is a background image on a website that covers the entire browser window at all times.
+*/
+
+body {
+    height: auto;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    background: url("../assets/background.webp") no-repeat center center fixed;
+    background-size: cover;
+}
+
+/*
+    The container holds all objects in this page. for that I use flex display. 
+*/
+
+.container {
+    width: 80%;
+    min-height: 60%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    background-color: rgb(214, 214, 214);
+    opacity: 0.9;
+    padding: 5px;
+    z-index: 100;
+
+    border-radius: 10px;
+    
+    
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+}
+
+/*
+    Header specify fieldset header style
+*/
+
+.header {
+    position: relative;
+    color: darkblue;
+    font-weight: 500;
+    font-size: 30px;
+}
+
+/* 
+    form card width
+*/
+.card {
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    background-color:   rgb(100, 173, 167);
+}
+
+.info-box{
+    width: 60%;
+    /* height: 100%; */
+    padding: 10px;
+    border-radius: 10px;
+    /* background-color:   orange; */
+}
+
+/*
+    All Buttons unic style
+*/
+button {
+    width: 120px;
+    height: 25px;
+    text-align: center;
+    margin: 5px;
+    background-color:  rgb(102, 102, 102);
+    color: rgb(255, 255, 255);
+    border-radius: 10px;
+    display: block;
+    margin: 10% auto;
+}
+
+.user-info {
+    width: 60%;
+    height: 100%;
+    border-radius: 10px;
+    padding: 10px;
+    float: right;
+}
+
+.user-avatar {
+    width: 30%;
+    height: 30%;
+    border-radius: 50%;
+    margin: 10px;
+    float: left;
+}
+img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border-color: rgb(0, 0, 0);
+    border-width: 2px;
+    border-style: solid;
+}
+
+.more-info {
+    width: 100%;
+    height: 100%;
+    padding: 10px;
+    border-radius: 10px;
+    float: right;
+}
+
+.user-info-table{
+    width: 80%;
+    height: 100%;
+    padding: 10px;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 1em;
+    font-family: sans-serif;
+    font-weight: 300;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+
+/*
+    Error section 
+*/
+.action_result {
+    display: none;
+}
