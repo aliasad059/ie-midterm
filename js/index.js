@@ -1,3 +1,6 @@
+/* 
+    setCookie() - set cookies with name, value and expiry date
+*/
 function setCookie(cname, cvalue, exdays) {
     const d = new Date();
     d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -7,6 +10,10 @@ function setCookie(cname, cvalue, exdays) {
     console.log("Cookie Set");
 }
 
+
+/*
+    getCookie() - get cookie value by name
+*/
 function getCookie(cname) {
     let name = cname + "=";
     let decodedCookie = decodeURIComponent(document.cookie);
@@ -25,6 +32,10 @@ function getCookie(cname) {
     return "";
 }
 
+
+/*
+    clearCookies() - clear all cookies
+*/
 function clearCookies(){
     let cookies = document.cookie.split(";");
     for (let i = 0; i < cookies.length; i++) {
@@ -36,11 +47,19 @@ function clearCookies(){
     console.log("Cookies Cleared");
 }
 
+
+/*
+    setLocalStorage() - save data to local storage with username as key and data as value
+*/
 function setLocalStorage(username, data){
     localStorage.setItem(username, data);
     console.log("Local Storage Set");
 }
 
+
+/*
+    getLocalStorage() - get data from local storage by username
+*/
 function getLocalStorage(username){
     let data = localStorage.getItem(username);
     if (data == null) {
@@ -50,12 +69,28 @@ function getLocalStorage(username){
     return data;
 }
 
+
+/*
+    clearLocalStorage() - clears all saved users data in local storage
+*/
+function clearLocalStorage(){
+    localStorage.clear();
+    console.log("Local Storage Cleared");
+}
+
+
+/*
+    fetchUserData() - fetch user data from github api by username
+*/
 async function fetchUserData(username){
     var response = await fetch(`https://api.github.com/users/${username}`);
     var data = await response.json();
     return data;
 }
 
+/*
+    setDataValue() - set user data to html elements
+*/
 function setDataValue(data){
     if (data.avatar_url) {document.getElementById("user-avatar").src = data.avatar_url ;}
     if (data.name) {document.getElementById("full-name").innerHTML = data.name} else {document.getElementById("account-name").innerHTML = "unknown"}
@@ -67,6 +102,10 @@ function setDataValue(data){
     if (data.public_repos) {document.getElementById("public-repos").innerHTML = data.public_repos} else {document.getElementById("public-repos").innerHTML = "unknown"}
 }
 
+
+/*
+    getFavoriteLang() - get user favorite language by fetching user repos and get last 5 repos languages
+*/
 async function getFavoriteLang(repos_url){
     let langs = [];
     const response = fetch(repos_url);
@@ -96,29 +135,36 @@ async function getFavoriteLang(repos_url){
     return f;
 }
 
-function clearLocalStorage(){
-    localStorage.clear();
-    console.log("Local Storage Cleared");
-}
 
+/*
+    Fetch user's data from cookies, local-storage or github api and update html elements
+*/
 async function getUser(){
     let username = document.getElementById("username").value
 
+    // check if user data is available in local-storage
     if (getLocalStorage(username)) {
         let s_data = getLocalStorage(username);
         var data = JSON.parse(s_data);
         document.getElementById("action_result").innerHTML = "Cached Data Loaded from Local Storage";
     } else {
+        document.getElementById("action_result").innerHTML = "Fetching Data from API"
+        document.getElementsByClassName("info-box")[0].style.opacity = 0.2
         var data = await fetchUserData(username);
         let s_data = JSON.stringify(data);
         setLocalStorage(username, s_data);
+        document.getElementsByClassName("info-box")[0].style.opacity = 1
         document.getElementById("action_result").innerHTML = "";
     }
-    
+
+    // check if user data is available in cookies
     if (getCookie(username) == "") {
+        document.getElementById("action_result").innerHTML = "Fetching Data from API"
+        document.getElementsByClassName("info-box")[0].style.opacity = 0.2
         var data = await fetchUserData(username);
         let s_data = JSON.stringify(data);
         setCookie(username, s_data, 1);
+        document.getElementsByClassName("info-box")[0].style.opacity = 1
         document.getElementById("action_result").innerHTML = "";
     } else {
         let s_data = getCookie(username);
@@ -126,6 +172,7 @@ async function getUser(){
         document.getElementById("action_result").innerHTML = "Cached Data Loaded from Cookies";
     }
     
+    // update html elements based on user's data
     if (data.message) {
         document.getElementsByClassName("info-box")[0].style.opacity = 0.2
         document.getElementById("action_result").innerHTML = "Selected User Not Found";
@@ -137,6 +184,7 @@ async function getUser(){
         setDataValue(data);
     }
     
+    // set user's favorite language
     if (data.repos_url) {
         document.getElementById("favorite-language").innerHTML = await getFavoriteLang(data.repos_url);
     } else {
